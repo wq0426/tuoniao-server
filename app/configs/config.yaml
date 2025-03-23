@@ -1,0 +1,4 @@
+# 在配置文件中添加微信小程序相关配置
+wechat:
+  mini_app_id: "your_mini_app_id"
+  mini_app_secret: "your_mini_app_secret" 

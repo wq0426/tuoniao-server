@@ -1,0 +1,12 @@
+[Unit]
+Description=Flashbear Service
+After=network.target
+
+[Service]
+ExecStart=/root/flashbear/flashbear
+WorkingDirectory=/root/flashbear
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target

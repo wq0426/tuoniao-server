@@ -1,0 +1,3806 @@
+definitions:
+  model.AddAddressRequest:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      is_default:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      province:
+        type: string
+      street:
+        type: string
+    required:
+    - city
+    - district
+    - name
+    - phone
+    - province
+    - street
+    type: object
+  model.AddEarningRequest:
+    properties:
+      amount:
+        description: 收益数量
+        type: integer
+      earning_type:
+        allOf:
+        - $ref: '#/definitions/model.EarningType'
+        description: 收益类型
+    required:
+    - amount
+    - earning_type
+    type: object
+  model.AddToCartRequest:
+    properties:
+      coupon_id:
+        type: integer
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - product_id
+    - quantity
+    type: object
+  model.Address:
+    properties:
+      city:
+        type: string
+      detail:
+        type: string
+      district:
+        type: string
+      id:
+        type: integer
+      isDefault:
+        type: boolean
+      name:
+        type: string
+      phone:
+        type: string
+      province:
+        type: string
+    type: object
+  model.AddressInfo:
+    properties:
+      city:
+        description: 城市
+        type: string
+      detail_address:
+        description: 详细地址
+        type: string
+      district:
+        description: 区县
+        type: string
+      province:
+        description: 省份
+        type: string
+      receiver_name:
+        description: 收货人姓名
+        type: string
+      receiver_phone:
+        description: 收货人电话
+        type: string
+    type: object
+  model.BalanceRecordResponse:
+    properties:
+      page:
+        description: 当前页码
+        type: integer
+      page_size:
+        description: 每页条数
+        type: integer
+      records:
+        description: 记录列表
+        items:
+          $ref: '#/definitions/model.UserAssetRecordDTO'
+        type: array
+      total:
+        description: 总记录数
+        type: integer
+    type: object
+  model.BannerResponse:
+    properties:
+      id:
+        type: integer
+      img:
+        description: 图片链接
+        type: string
+      url:
+        description: 跳转链接
+        type: string
+    type: object
+  model.CancelRefundRequest:
+    properties:
+      refund_id:
+        description: 退款单ID
+        type: integer
+    required:
+    - refund_id
+    type: object
+  model.CartProductDTO:
+    properties:
+      cart_id:
+        type: integer
+      coupon_id:
+        type: integer
+      coupon_price:
+        type: number
+      courier_fee_min:
+        type: number
+      current_price:
+        type: number
+      member_discount:
+        type: number
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  model.CartStoreDTO:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.CartProductDTO'
+        type: array
+      store_id:
+        type: integer
+      store_name:
+        type: string
+      store_url:
+        type: string
+    type: object
+  model.ClaimCouponRequest:
+    properties:
+      coupon_id:
+        description: 优惠券ID
+        type: integer
+    required:
+    - coupon_id
+    type: object
+  model.CouponDetailResponse:
+    properties:
+      available_min_price:
+        description: 可用最低金额
+        type: number
+      coupon_name:
+        description: 优惠券名称
+        type: string
+      coupon_price:
+        description: 优惠券金额
+        type: number
+      created_at:
+        description: 创建时间
+        type: string
+      deadline:
+        description: 截止时间
+        type: string
+      id:
+        type: integer
+      product_id:
+        description: 商品ID
+        type: integer
+      status:
+        description: 状态
+        type: integer
+      type:
+        description: 类型（1:优惠券；2:兑换券）
+        type: integer
+    type: object
+  model.CreateEvaluateReplyRequest:
+    properties:
+      content:
+        description: 回复内容
+        type: string
+      evaluate_id:
+        description: 被回复的评价ID
+        type: integer
+    required:
+    - content
+    - evaluate_id
+    type: object
+  model.CreateEvaluateRequest:
+    properties:
+      content:
+        description: 评论内容
+        type: string
+      review_id:
+        description: 评价ID
+        type: integer
+    required:
+    - content
+    - review_id
+    type: object
+  model.CreateOrderRequest:
+    properties:
+      address:
+        $ref: '#/definitions/model.Address'
+      items:
+        items:
+          $ref: '#/definitions/model.OrderItemRequest'
+        type: array
+      payment_method:
+        type: integer
+      status:
+        type: integer
+    required:
+    - address
+    - items
+    - payment_method
+    type: object
+  model.CreateReviewRequest:
+    properties:
+      content:
+        description: 评价内容
+        type: string
+      delivery_rating:
+        description: 配送评分
+        maximum: 5
+        minimum: 1
+        type: integer
+      freshness_rating:
+        description: 新鲜程度评分
+        maximum: 5
+        minimum: 1
+        type: integer
+      images:
+        description: 评价图片数组
+        items:
+          type: string
+        type: array
+      is_anonymous:
+        description: 是否匿名评价
+        type: boolean
+      order_item_id:
+        description: 订单ID
+        type: integer
+      packaging_rating:
+        description: 包装评分
+        maximum: 5
+        minimum: 1
+        type: integer
+      product_id:
+        description: 商品ID
+        type: integer
+      rating:
+        description: 商品评分
+        maximum: 5
+        minimum: 1
+        type: integer
+      service_rating:
+        description: 服务态度评分
+        maximum: 5
+        minimum: 1
+        type: integer
+    required:
+    - delivery_rating
+    - freshness_rating
+    - order_item_id
+    - packaging_rating
+    - product_id
+    - rating
+    - service_rating
+    type: object
+  model.CreateWithdrawRequest:
+    properties:
+      amount:
+        description: 提现金额
+        type: number
+    required:
+    - amount
+    type: object
+  model.DeleteAddressRequest:
+    properties:
+      id:
+        type: integer
+    required:
+    - id
+    type: object
+  model.DeleteCartItemsRequest:
+    properties:
+      ids:
+        description: Comma-separated list of cart IDs
+        type: string
+    required:
+    - ids
+    type: object
+  model.EarningListDateAmountItem:
+    properties:
+      amount:
+        description: 收益数量
+        type: integer
+      date:
+        description: 日期，格式：YYYY-MM
+        type: string
+      image:
+        description: 图片
+        type: string
+      name:
+        description: 名称
+        type: string
+    type: object
+  model.EarningListDateItem:
+    properties:
+      amount:
+        description: 收益数量
+        type: integer
+      amount_item:
+        description: 收益数量
+        items:
+          $ref: '#/definitions/model.EarningListDateAmountItem'
+        type: array
+      date:
+        description: 日期，格式：YYYY-MM
+        type: string
+    type: object
+  model.EarningListItem:
+    properties:
+      date_list:
+        description: 日期列表
+        items:
+          $ref: '#/definitions/model.EarningListDateItem'
+        type: array
+      id:
+        allOf:
+        - $ref: '#/definitions/model.EarningType'
+        description: 收益类型
+      type_name:
+        description: 分类名称
+        type: string
+    type: object
+  model.EarningListResponse:
+    properties:
+      list:
+        description: 收益列表
+        items:
+          $ref: '#/definitions/model.EarningListItem'
+        type: array
+    type: object
+  model.EarningType:
+    enum:
+    - 1
+    - 2
+    - 3
+    type: integer
+    x-enum-comments:
+      EarningTypeBird: 商品鸟
+      EarningTypeBreeding: 种鸟
+      EarningTypeEgg: 鸟蛋
+    x-enum-varnames:
+    - EarningTypeEgg
+    - EarningTypeBird
+    - EarningTypeBreeding
+  model.FreeMarketMineResponse:
+    properties:
+      no_sell_list:
+        items:
+          $ref: '#/definitions/model.NoSellEggDTO'
+        type: array
+      others:
+        items:
+          $ref: '#/definitions/model.NoSellEggDTO'
+        type: array
+      selled_list:
+        items:
+          $ref: '#/definitions/model.SelledEggDTO'
+        type: array
+      summary:
+        $ref: '#/definitions/model.SummaryDTO'
+    type: object
+  model.LoginResponseData:
+    properties:
+      access_token:
+        type: string
+      bind_info:
+        $ref: '#/definitions/model.WeChatUserInfo'
+      expired:
+        type: integer
+      user_info:
+        $ref: '#/definitions/model.UserInfo'
+    type: object
+  model.MonitorResponse:
+    properties:
+      id:
+        type: integer
+      img:
+        description: 图片链接
+        type: string
+      title:
+        description: 标题
+        type: string
+      url:
+        description: 跳转链接
+        type: string
+    type: object
+  model.NewsResponse:
+    properties:
+      content:
+        description: 内容
+        type: string
+      date:
+        description: 日期
+        type: string
+      id:
+        type: integer
+      img:
+        description: 图片链接
+        type: string
+      title:
+        description: 标题
+        type: string
+      url:
+        description: 跳转链接
+        type: string
+    type: object
+  model.NewsType:
+    properties:
+      list:
+        description: 新闻列表
+        items:
+          $ref: '#/definitions/model.NewsResponse'
+        type: array
+      title:
+        description: 类型标题
+        type: string
+      type:
+        description: 类型
+        type: integer
+    type: object
+  model.NicknameAvatar:
+    properties:
+      address:
+        description: 收获地址
+        type: string
+      avatar_base64:
+        description: 头像
+        type: string
+      birthday:
+        description: 出生日期
+        type: string
+      gender:
+        description: 性别
+        type: integer
+      member_level:
+        description: 会员等级
+        type: integer
+      nickname:
+        description: 昵称
+        type: string
+      phone:
+        description: 绑定手机号
+        type: string
+    type: object
+  model.NoSellEggDTO:
+    properties:
+      date:
+        type: string
+      egg_num:
+        type: integer
+      egg_price:
+        type: number
+      id:
+        type: integer
+    type: object
+  model.OrderDetailResponse:
+    properties:
+      actual_amount:
+        description: 实际支付金额
+        type: number
+      address:
+        allOf:
+        - $ref: '#/definitions/model.AddressInfo'
+        description: 地址信息
+      completed_at:
+        description: 完成时间
+        type: string
+      coupon_discount:
+        description: 优惠券折扣
+        type: number
+      created_at:
+        description: 创建时间
+        type: string
+      member_discount:
+        description: 会员折扣
+        type: number
+      order_amount:
+        description: 订单金额
+        type: number
+      order_id:
+        description: 订单基本信息
+        type: integer
+      order_no:
+        description: 订单号
+        type: string
+      pay_method:
+        description: 支付方式
+        type: integer
+      pay_method_text:
+        description: 支付方式文本
+        type: string
+      pay_time:
+        description: 支付时间
+        type: string
+      products:
+        description: 商品信息
+        items:
+          $ref: '#/definitions/model.ProductListItemDTO'
+        type: array
+      shipped_at:
+        description: 发货时间
+        type: string
+      shipping_fee:
+        description: 运费
+        type: number
+      status:
+        description: 订单状态
+        type: integer
+      status_text:
+        description: 订单状态文本
+        type: string
+      store_id:
+        description: 店铺ID
+        type: integer
+      store_logo:
+        description: 店铺Logo
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+      total_price:
+        description: 订单汇总信息
+        type: number
+      updated_at:
+        description: 更新时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.OrderDetails:
+    properties:
+      order_created:
+        description: 订单创建时间
+        type: string
+      order_id:
+        description: 订单ID
+        type: integer
+      order_no:
+        description: 订单号
+        type: string
+      order_status:
+        description: 订单状态
+        type: integer
+    type: object
+  model.OrderItemRequest:
+    properties:
+      cart_id:
+        type: integer
+      coupon_id:
+        type: integer
+      coupon_price:
+        type: number
+      courier_fee_min:
+        type: number
+      current_price:
+        type: number
+      image:
+        type: string
+      member_discount:
+        type: number
+      note:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: integer
+      store_id:
+        type: integer
+      store_name:
+        type: string
+    required:
+    - current_price
+    - image
+    - product_id
+    - product_name
+    - quantity
+    type: object
+  model.OrderListDTO:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      order_no:
+        type: string
+      pay_time:
+        type: string
+      payment_method:
+        type: integer
+      product:
+        $ref: '#/definitions/model.OrderProductDTO'
+      status:
+        type: integer
+      status_text:
+        type: string
+      store_icon:
+        description: 店铺图标
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+      total_fee:
+        type: number
+      user_id:
+        type: string
+    type: object
+  model.OrderListResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/model.OrderListDTO'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.OrderProductDTO:
+    properties:
+      image:
+        type: string
+      item_id:
+        type: integer
+      price:
+        type: number
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  model.OrderProductsResponse:
+    properties:
+      products:
+        description: 商品列表
+        items:
+          $ref: '#/definitions/model.ProductListItemDTO'
+        type: array
+    type: object
+  model.PointExchangeConfigListResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/model.PointExchangeConfigResponse'
+        type: array
+      total:
+        type: integer
+    type: object
+  model.PointExchangeConfigResponse:
+    properties:
+      created_at:
+        description: 创建时间
+        type: string
+      exchange_amount:
+        description: 兑换的金额
+        type: number
+      id:
+        type: integer
+      images:
+        description: 积分兑换图片
+        type: string
+      is_exchange:
+        description: 是否可兑换
+        type: boolean
+      min_amount:
+        description: 可使用的最小金额
+        type: number
+      points:
+        description: 发放的积分
+        type: integer
+      required:
+        description: 消费的金额
+        type: number
+      title:
+        description: 积分兑换标题
+        type: string
+      type:
+        description: 类型（1:优惠券；2:兑换券）
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: string
+    type: object
+  model.PointExchangeRequest:
+    properties:
+      config_id:
+        description: 兑换配置ID
+        type: integer
+    required:
+    - config_id
+    type: object
+  model.ProductCategory2DTO:
+    properties:
+      category2_id:
+        type: integer
+      category2_name:
+        type: string
+      product_list:
+        items:
+          $ref: '#/definitions/model.ProductListItemDTO'
+        type: array
+    type: object
+  model.ProductCouponDTO:
+    properties:
+      available_min_price:
+        type: number
+      coupon_id:
+        type: integer
+      coupon_name:
+        type: string
+      coupon_price:
+        type: number
+      deadline:
+        type: string
+      is_received:
+        type: integer
+      product_id:
+        type: integer
+    type: object
+  model.ProductEvaluateDTO:
+    properties:
+      avatar:
+        type: string
+      evaluate_content:
+        type: string
+      evaluate_id:
+        type: integer
+      evaluate_images:
+        items:
+          type: string
+        type: array
+      evaluate_nums:
+        type: integer
+      evaluate_time:
+        type: string
+      is_return:
+        type: integer
+      nickname:
+        type: string
+      praise_nums:
+        type: integer
+      view_nums:
+        type: integer
+    type: object
+  model.ProductEvaluateList:
+    properties:
+      avatar:
+        description: 用户头像
+        type: string
+      comment_list:
+        items:
+          $ref: '#/definitions/model.ProductEvaluateList'
+        type: array
+      content:
+        description: 评价内容
+        type: string
+      created_at_str:
+        type: string
+      createdAt:
+        type: string
+      id:
+        type: integer
+      nickname:
+        description: 用户昵称
+        type: string
+      parent_id:
+        type: integer
+      product_id:
+        description: 商品ID
+        type: integer
+      review_id:
+        description: 评价ID
+        type: integer
+      updatedAt:
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.ProductListItemDTO:
+    properties:
+      category1_id:
+        type: integer
+      category2_id:
+        type: integer
+      coupon_id:
+        type: integer
+      coupon_price:
+        type: number
+      courier_fee_max:
+        type: number
+      courier_fee_min:
+        type: number
+      header_img:
+        type: string
+      item_id:
+        type: integer
+      member_discount:
+        type: number
+      product_content:
+        type: string
+      product_coupons:
+        items:
+          $ref: '#/definitions/model.ProductCouponDTO'
+        type: array
+      product_current_price:
+        type: number
+      product_evaluate:
+        items:
+          $ref: '#/definitions/model.ProductEvaluateDTO'
+        type: array
+      product_evaluate_nums:
+        type: integer
+      product_id:
+        type: integer
+      product_images:
+        items:
+          type: string
+        type: array
+      product_is_special:
+        type: integer
+      product_name:
+        type: string
+      product_original_price:
+        type: number
+      product_quantity:
+        type: integer
+      product_sales:
+        type: integer
+      product_spec:
+        type: string
+      product_specification:
+        type: string
+      product_unit:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.ProductListResponse:
+    properties:
+      category1_id:
+        type: integer
+      category1_name:
+        type: string
+      category2_list:
+        items:
+          $ref: '#/definitions/model.ProductCategory2DTO'
+        type: array
+    type: object
+  model.RechargeRequest:
+    properties:
+      amount:
+        description: 充值金额，必须大于0
+        type: number
+    required:
+    - amount
+    type: object
+  model.RefundDetailResponse:
+    properties:
+      order_detail:
+        allOf:
+        - $ref: '#/definitions/model.OrderDetails'
+        description: 订单详情
+      refund:
+        allOf:
+        - $ref: '#/definitions/model.RefundOrder'
+        description: 退款单信息
+    type: object
+  model.RefundItemRequest:
+    properties:
+      images:
+        description: 图片凭证
+        type: string
+      order_item_id:
+        description: 订单项ID
+        type: integer
+      refund_reason:
+        description: 退款原因
+        type: string
+      refund_type:
+        description: 退款类型(1:仅退款;2:退货退款)
+        enum:
+        - 1
+        - 2
+        type: integer
+    required:
+    - order_item_id
+    - refund_reason
+    - refund_type
+    type: object
+  model.RefundListResponse:
+    properties:
+      list:
+        description: 退款列表
+        items:
+          $ref: '#/definitions/model.RefundOrderItem'
+        type: array
+      page:
+        description: 页码
+        type: integer
+      size:
+        description: 每页条数
+        type: integer
+      total:
+        description: 总数
+        type: integer
+    type: object
+  model.RefundOrder:
+    properties:
+      apply_time:
+        description: 申请时间
+        type: string
+      completion_time:
+        description: 完成时间
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      header_img:
+        description: 商品图片
+        type: string
+      id:
+        type: integer
+      images:
+        description: 图片凭证
+        type: string
+      order_id:
+        description: 订单ID
+        type: integer
+      order_item_id:
+        description: 订单项ID
+        type: integer
+      order_no:
+        description: 订单号
+        type: string
+      origin_status:
+        description: 原始状态
+        type: integer
+      price:
+        description: 商品单价
+        type: number
+      process_time:
+        description: 处理时间
+        type: string
+      product_id:
+        description: 商品ID
+        type: integer
+      product_name:
+        description: 商品名称
+        type: string
+      quantity:
+        description: 退款数量
+        type: integer
+      refund_amount:
+        description: 退款金额
+        type: number
+      refund_no:
+        description: 退款单号
+        type: string
+      refund_reason:
+        description: 退款原因
+        type: string
+      refund_type:
+        description: 退款类型
+        type: integer
+      reject_reason:
+        description: 拒绝原因
+        type: string
+      status:
+        description: 退款状态
+        type: integer
+      store_icon:
+        description: 店铺图标
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.RefundOrderItem:
+    properties:
+      apply_time:
+        description: 申请时间
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      header_img:
+        description: 商品图片
+        type: string
+      id:
+        description: 退款单ID
+        type: integer
+      order_id:
+        description: 订单ID
+        type: integer
+      order_no:
+        description: 订单号
+        type: string
+      price:
+        description: 商品单价
+        type: number
+      product_name:
+        description: 商品名称
+        type: string
+      quantity:
+        description: 退款数量
+        type: integer
+      refund_amount:
+        description: 退款金额
+        type: number
+      refund_no:
+        description: 退款单号
+        type: string
+      refund_type:
+        description: 退款类型
+        type: integer
+      status:
+        description: 退款状态
+        type: integer
+      status_text:
+        description: 退款状态文本
+        type: string
+      store_icon:
+        description: 店铺图标
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+    type: object
+  model.ReviewDetailResponse:
+    properties:
+      comment_nums:
+        description: 评论数量
+        type: integer
+      content:
+        description: 评价内容
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      delivery_rating:
+        description: 配送评分
+        type: integer
+      evaluate_list:
+        description: 评论和回复列表
+        items:
+          $ref: '#/definitions/model.ProductEvaluateList'
+        type: array
+      freshness_rating:
+        description: 新鲜程度评分
+        type: integer
+      id:
+        description: 评价ID
+        type: integer
+      images:
+        description: 评价图片
+        items:
+          type: string
+        type: array
+      is_anonymous:
+        description: 是否匿名评价
+        type: boolean
+      order_id:
+        description: 订单ID
+        type: integer
+      order_item_id:
+        description: 订单项ID
+        type: integer
+      order_no:
+        description: 订单编号
+        type: string
+      packaging_rating:
+        description: 包装评分
+        type: integer
+      price:
+        description: 商品价格
+        type: number
+      product_id:
+        description: 商品ID
+        type: integer
+      product_image:
+        description: 商品图片
+        type: string
+      product_name:
+        description: 商品名称
+        type: string
+      product_spec:
+        description: 商品规格
+        type: string
+      quantity:
+        description: 购买数量
+        type: integer
+      rating:
+        description: 商品评分
+        type: integer
+      service_rating:
+        description: 服务态度评分
+        type: integer
+      status:
+        description: 状态
+        type: integer
+      status_text:
+        description: 状态文本
+        type: string
+      store_icon:
+        description: 店铺图标
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+      user_avatar:
+        description: 用户头像
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+      user_name:
+        description: 用户名称
+        type: string
+    type: object
+  model.ReviewListDTO:
+    properties:
+      evaluate_nums:
+        description: 评价人数
+        type: integer
+      id:
+        description: 评价ID
+        type: integer
+      is_anonymous:
+        description: 是否匿名
+        type: boolean
+      order_id:
+        description: 订单ID
+        type: integer
+      order_item_id:
+        description: 订单项ID
+        type: integer
+      order_no:
+        description: 订单编号
+        type: string
+      order_time:
+        description: 订单时间
+        type: string
+      praise_nums:
+        description: 点赞人数
+        type: integer
+      price:
+        description: 商品价格
+        type: number
+      product_id:
+        description: 商品ID
+        type: integer
+      product_image:
+        description: 商品图片
+        type: string
+      product_name:
+        description: 商品名称
+        type: string
+      quantity:
+        description: 购买数量
+        type: integer
+      review_content:
+        description: 评价内容
+        type: string
+      review_images:
+        description: 评价图片
+        items:
+          type: string
+        type: array
+      review_status:
+        description: 评价状态
+        type: integer
+      status_text:
+        description: 订单状态文本
+        type: string
+      store_icon:
+        description: 店铺图标
+        type: string
+      store_name:
+        description: 店铺名称
+        type: string
+      user_avatar:
+        description: 用户头像
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+      view_nums:
+        description: 查看人数
+        type: integer
+    type: object
+  model.ReviewListResponse:
+    properties:
+      reviews:
+        description: 评价列表
+        items:
+          $ref: '#/definitions/model.ReviewListDTO'
+        type: array
+      total:
+        description: 总数
+        type: integer
+    type: object
+  model.ReviewTabType:
+    enum:
+    - 0
+    - 1
+    - 2
+    type: integer
+    x-enum-comments:
+      ReviewTabAll: 全部评价
+      ReviewTabCompleted: 已评价
+      ReviewTabPending: 待评价
+    x-enum-varnames:
+    - ReviewTabAll
+    - ReviewTabPending
+    - ReviewTabCompleted
+  model.SelledEggDTO:
+    properties:
+      date:
+        type: string
+      egg_num:
+        type: integer
+      egg_price:
+        type: number
+      total:
+        type: number
+    type: object
+  model.SummaryDTO:
+    properties:
+      total_no_sell:
+        type: integer
+      total_selled:
+        type: integer
+    type: object
+  model.UpdateAddressRequest:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      id:
+        type: integer
+      is_default:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      province:
+        type: string
+      street:
+        type: string
+    required:
+    - city
+    - district
+    - id
+    - name
+    - phone
+    - province
+    - street
+    type: object
+  model.UpdateEggPriceRequest:
+    properties:
+      id:
+        type: integer
+      price:
+        type: number
+    required:
+    - id
+    - price
+    type: object
+  model.UpdateEvaluateAnonymousRequest:
+    properties:
+      is_anonymous:
+        description: 是否匿名：true-匿名，false-公开
+        type: boolean
+      review_id:
+        description: 评论ID
+        type: integer
+    required:
+    - review_id
+    type: object
+  model.UpdateOrderStatusRequest:
+    properties:
+      order_id:
+        description: 订单ID
+        type: integer
+      status:
+        description: 订单状态
+        type: integer
+    required:
+    - order_id
+    type: object
+  model.UpdateReviewCounterRequest:
+    properties:
+      review_id:
+        description: 评价ID
+        type: integer
+      type:
+        description: 计数类型：0-浏览，1-评论，2-点赞，3-取消点赞
+        enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        type: integer
+    required:
+    - review_id
+    type: object
+  model.UserAddress:
+    properties:
+      city:
+        description: 城市
+        type: string
+      created_at:
+        type: string
+      district:
+        description: 区/县
+        type: string
+      id:
+        type: integer
+      is_default:
+        description: 是否默认地址
+        type: integer
+      name:
+        description: 收件人姓名
+        type: string
+      phone:
+        description: 联系电话
+        type: string
+      province:
+        description: 省份
+        type: string
+      street:
+        description: 详细地址
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.UserAssetRecordDTO:
+    properties:
+      action_num:
+        description: 操作数量
+        type: number
+      action_type:
+        description: 操作类型：1-增加，2-减少
+        type: integer
+      asset_type:
+        description: 资产类型：1-积分，2-余额
+        type: integer
+      business_type:
+        description: 业务类型
+        type: integer
+      created_at:
+        description: 创建时间
+        type: string
+      id:
+        description: 记录ID
+        type: integer
+      left_num:
+        description: 剩余数量
+        type: number
+      remark:
+        description: 备注
+        type: string
+      title:
+        description: 标题
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.UserAssetResponse:
+    properties:
+      avatar:
+        description: 用户头像
+        type: string
+      balance:
+        description: 用户余额
+        type: number
+      coupon_count:
+        description: 用户优惠券数量
+        type: integer
+      nickname:
+        description: 用户昵称
+        type: string
+      points:
+        description: 用户积分
+        type: integer
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.UserCoupon:
+    properties:
+      available_min_price:
+        description: 可用最低价格
+        type: number
+      coupon_id:
+        description: 优惠券ID (注意:列名在DB中有拼写错误)
+        type: integer
+      coupon_name:
+        description: 优惠券名称
+        type: string
+      coupon_price:
+        description: 优惠券价格
+        type: number
+      created_at:
+        type: string
+      deadline:
+        description: 截止时间
+        type: string
+      id:
+        type: integer
+      product_id:
+        description: 商品ID
+        type: integer
+      status:
+        description: 状态
+        type: integer
+      type:
+        description: 类型
+        type: integer
+      updated_at:
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+    type: object
+  model.UserInfo:
+    properties:
+      avatar:
+        type: string
+      email:
+        type: string
+      level:
+        type: integer
+      nickname:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.UserReviewListResponse:
+    properties:
+      list:
+        description: 全部评价列表
+        items: {}
+        type: array
+      tab:
+        allOf:
+        - $ref: '#/definitions/model.ReviewTabType'
+        description: 当前标签
+    type: object
+  model.WeChatDecryptResponse:
+    properties:
+      token:
+        description: 平台token，如果需要登录
+        type: string
+      user_info:
+        allOf:
+        - $ref: '#/definitions/model.WeChatDecryptedInfo'
+        description: 用户信息
+    type: object
+  model.WeChatDecryptedInfo:
+    properties:
+      avatarUrl:
+        description: 用户头像CountryCode     string `json:"countryCode,omitempty"`     //
+          区号
+        type: string
+      city:
+        description: 用户所在城市
+        type: string
+      country:
+        description: 用户所在国家
+        type: string
+      gender:
+        description: 用户性别
+        type: integer
+      language:
+        description: 用户语言
+        type: string
+      nickName:
+        description: 用户昵称
+        type: string
+      province:
+        description: 用户所在省份
+        type: string
+      watermark:
+        description: 数据水印
+        properties:
+          appid:
+            description: 小程序appid
+            type: string
+          timestamp:
+            description: 时间戳
+            type: integer
+        type: object
+    type: object
+  model.WeChatEncryptedDataRequest:
+    properties:
+      encryptedData:
+        description: 包括敏感数据在内的完整用户信息的加密数据
+        type: string
+      iv:
+        description: 加密算法的初始向量
+        type: string
+      openid:
+        description: 用户唯一标识
+        type: string
+      sessionKey:
+        description: 会话密钥
+        type: string
+    required:
+    - encryptedData
+    - iv
+    type: object
+  model.WeChatLoginRequest:
+    properties:
+      code:
+        description: 微信临时登录凭证
+        type: string
+    required:
+    - code
+    type: object
+  model.WeChatLoginResponse:
+    properties:
+      openid:
+        description: 用户唯一标识
+        type: string
+      session_key:
+        description: 会话密钥
+        type: string
+      token:
+        description: 平台token
+        type: string
+    type: object
+  model.WeChatUserInfo:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      headimgurl:
+        type: string
+      nickname:
+        type: string
+      openid:
+        type: string
+      province:
+        type: string
+      sex:
+        type: integer
+      unionid:
+        type: string
+    type: object
+  model.WithdrawDetailResponse:
+    properties:
+      account_name:
+        description: 账户名
+        type: string
+      account_no:
+        description: 账号
+        type: string
+      actual_amount:
+        description: 实际到账金额
+        type: number
+      amount:
+        description: 提现金额
+        type: number
+      audit_time:
+        description: 审核时间
+        type: string
+      bank_name:
+        description: 银行名称
+        type: string
+      complete_time:
+        description: 完成时间
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      fee:
+        description: 手续费
+        type: number
+      id:
+        description: 提现单ID
+        type: integer
+      reject_reason:
+        description: 拒绝原因
+        type: string
+      remark:
+        description: 备注
+        type: string
+      status:
+        description: 提现状态
+        type: integer
+      status_text:
+        description: 提现状态文本
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+      withdraw_no:
+        description: 提现单号
+        type: string
+    type: object
+  model.WithdrawListItem:
+    properties:
+      account_name:
+        description: 账户名
+        type: string
+      account_no:
+        description: 账号
+        type: string
+      actual_amount:
+        description: 实际到账金额
+        type: number
+      amount:
+        description: 提现金额
+        type: number
+      bank_name:
+        description: 银行名称
+        type: string
+      created_at:
+        description: 创建时间
+        type: string
+      fee:
+        description: 手续费
+        type: number
+      id:
+        description: 提现单ID
+        type: integer
+      status:
+        description: 提现状态
+        type: integer
+      status_text:
+        description: 提现状态文本
+        type: string
+      title:
+        description: 标题
+        type: string
+      withdraw_no:
+        description: 提现单号
+        type: string
+    type: object
+  model.WithdrawListResponse:
+    properties:
+      list:
+        description: 提现列表
+        items:
+          $ref: '#/definitions/model.WithdrawListItem'
+        type: array
+      page:
+        description: 页码
+        type: integer
+      size:
+        description: 每页条数
+        type: integer
+      total:
+        description: 总数
+        type: integer
+    type: object
+  model.WithdrawRequest:
+    properties:
+      amount:
+        description: 提取金额，必须大于0
+        type: number
+    required:
+    - amount
+    type: object
+  v1.CryptoRequest:
+    description: CryptoRequest 参数描述
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
+  v1.GetProfileResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/v1.GetProfileResponseData'
+      message:
+        type: string
+    type: object
+  v1.GetProfileResponseData:
+    properties:
+      address:
+        type: string
+      aff_code:
+        type: string
+      avatar:
+        type: string
+      birthday:
+        type: string
+      email:
+        type: string
+      gender:
+        type: integer
+      member_level:
+        type: integer
+      nickname:
+        example: alan
+        type: string
+      phone:
+        type: string
+      point:
+        type: integer
+      role:
+        type: integer
+      step_max_point:
+        type: integer
+      user_asset:
+        $ref: '#/definitions/v1.UserAsset'
+      userId:
+        type: string
+    type: object
+  v1.LoginRequest:
+    description: LoginRequest 参数描述
+    properties:
+      code:
+        type: string
+      phone:
+        type: string
+    required:
+    - code
+    - phone
+    type: object
+  v1.LoginResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/v1.LoginResponseData'
+      message:
+        type: string
+    type: object
+  v1.LoginResponseData:
+    properties:
+      accessToken:
+        type: string
+      expired:
+        type: integer
+    type: object
+  v1.ResetPasswordRequest:
+    description: ResetPasswordRequest 参数描述
+    properties:
+      password:
+        type: string
+    required:
+    - password
+    type: object
+  v1.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  v1.UserAsset:
+    properties:
+      balance:
+        type: number
+      coupon_count:
+        type: integer
+      points:
+        type: integer
+    type: object
+host: 127.0.0.1:8289
+info:
+  contact:
+    email: wq0426@163.com
+  title: 鸵小妥API
+  version: 1.0.2
+paths:
+  /account/code:
+    post:
+      consumes:
+      - application/json
+      description: 发送验证码
+      parameters:
+      - description: 备注 (type 1:注册 2:登录 3:找回密码 4:修改手机号 5:重新绑定 6:交友密码)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.CryptoRequest'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      summary: 发送验证码
+      tags:
+      - 用户模块
+  /account/login:
+    post:
+      consumes:
+      - application/json
+      description: 支持手机验证码和密码登录
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.LoginResponse'
+      summary: 账号登录
+      tags:
+      - 用户模块
+  /account/profile:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            $ref: '#/definitions/v1.GetProfileResponse'
+      summary: 获取用户信息
+      tags:
+      - 用户模块
+    put:
+      consumes:
+      - application/json
+      description: 修改昵称和头像
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 修改昵称和头像
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.NicknameAvatar'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      summary: 修改昵称和头像
+      tags:
+      - 用户模块
+  /account/reset:
+    post:
+      consumes:
+      - application/json
+      description: 通过手机号和新密码重置用户密码
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/v1.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  type: boolean
+              type: object
+      summary: 重置用户密码
+      tags:
+      - 用户模块
+  /account/wechat/decrypt:
+    post:
+      consumes:
+      - application/json
+      description: 使用session_key解密微信前端传来的加密数据，获取用户信息
+      parameters:
+      - description: 微信加密数据请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.WeChatEncryptedDataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.WeChatDecryptResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 解密微信加密数据
+      tags:
+      - 账户
+  /account/wechat/login/callback:
+    get:
+      consumes:
+      - application/json
+      description: 处理微信登录回调
+      parameters:
+      - description: 微信授权临时票据
+        in: query
+        name: code
+        required: true
+        type: string
+      - description: 状态参数
+        in: query
+        name: state
+        type: string
+      produces:
+      - application/json
+      responses:
+        "0":
+          description: ""
+          schema:
+            $ref: '#/definitions/model.LoginResponseData'
+      summary: 微信登录回调
+      tags:
+      - 用户模块
+  /account/wechat_mini_login:
+    post:
+      consumes:
+      - application/json
+      description: 使用微信小程序临时登录凭证登录并获取平台token
+      parameters:
+      - description: 微信登录请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.WeChatLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            allOf:
+            - $ref: '#/definitions/v1.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.WeChatLoginResponse'
+              type: object
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 微信小程序登录
+      tags:
+      - 账户
+  /address/add:
+    post:
+      consumes:
+      - application/json
+      description: 新增用户收货地址
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 新增地址请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 新增用户地址
+      tags:
+      - 用户地址
+  /address/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除用户收货地址
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 删除地址请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeleteAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 删除用户地址
+      tags:
+      - 用户地址
+  /address/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户所有收货地址
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserAddress'
+            type: array
+      summary: 获取用户地址列表
+      tags:
+      - 用户地址
+  /address/update:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户收货地址
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 更新地址请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateAddressRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 更新用户地址
+      tags:
+      - 用户地址
+  /asset/balance/records:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询用户余额的所有变动记录
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BalanceRecordResponse'
+      summary: 查询用户余额变动记录
+      tags:
+      - 用户资产
+  /asset/exchange/records:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询用户的积分兑换记录
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BalanceRecordResponse'
+      summary: 查询用户积分兑换记录
+      tags:
+      - 用户资产
+  /asset/info:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的积分等资产信息
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserAssetResponse'
+      summary: 获取用户资产
+      tags:
+      - 用户资产
+  /asset/recharge:
+    post:
+      consumes:
+      - application/json
+      description: 给用户账户充值指定金额
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 充值请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RechargeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 充值用户余额
+      tags:
+      - 用户资产
+  /asset/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: 从用户账户提取指定金额
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 提现请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.WithdrawRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 从用户余额提现
+      tags:
+      - 用户资产
+  /asset/withdraw/records:
+    get:
+      consumes:
+      - application/json
+      description: 分页查询用户的提现记录
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.BalanceRecordResponse'
+      summary: 查询用户提现记录
+      tags:
+      - 用户资产
+  /banner/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取首页Banner列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.BannerResponse'
+            type: array
+      summary: 获取首页Banner列表
+      tags:
+      - 首页模块
+  /cart/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加商品到购物车，如果已存在则数量加1
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 添加购物车请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddToCartRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 添加商品到购物车
+      tags:
+      - 购物车
+  /cart/delete:
+    post:
+      consumes:
+      - application/json
+      description: 删除购物车中的商品，支持批量删除
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 删除购物车请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.DeleteCartItemsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 删除购物车商品
+      tags:
+      - 购物车
+  /cart/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户购物车中未处理的商品列表，按店铺分组
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.CartStoreDTO'
+            type: array
+      summary: 获取用户购物车列表
+      tags:
+      - 购物车
+  /coupon/claim:
+    post:
+      consumes:
+      - application/json
+      description: 根据优惠券ID领取优惠券，如果已领取会提示
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 领取优惠券请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ClaimCouponRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 领取优惠券
+      tags:
+      - 优惠券
+  /coupon/detail:
+    get:
+      consumes:
+      - application/json
+      description: 根据优惠券ID获取优惠券详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 优惠券ID
+        in: query
+        name: coupon_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.CouponDetailResponse'
+      summary: 获取优惠券详情
+      tags:
+      - 优惠券
+  /coupon/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户所有优惠券列表，可根据状态过滤
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ProductCouponDTO'
+            type: array
+      summary: 获取用户所有优惠券
+      tags:
+      - 优惠券
+  /coupon/product:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户针对特定商品的优惠券列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 商品ID
+        in: query
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.UserCoupon'
+            type: array
+      summary: 获取用户特定商品的优惠券
+      tags:
+      - 优惠券
+  /earning/add:
+    post:
+      consumes:
+      - application/json
+      description: 添加用户的收益记录
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 收益信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddEarningRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 添加用户收益
+      tags:
+      - 收益
+  /earning/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户的收益记录列表，可按日期筛选
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 日期，格式：YYYY-MM-DD
+        in: query
+        name: date
+        type: string
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.EarningListResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取用户收益列表
+      tags:
+      - 收益
+  /market/mine:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户已售出和未售出的鸡蛋情况
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.FreeMarketMineResponse'
+      summary: 获取用户鸡蛋销售情况
+      tags:
+      - 自由市场
+  /market/update-price:
+    post:
+      consumes:
+      - application/json
+      description: 更新用户未售出的鸡蛋价格
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 更新鸡蛋价格请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateEggPriceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 更新用户鸡蛋价格
+      tags:
+      - 自由市场
+  /monitor/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取Monitor列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.MonitorResponse'
+            type: array
+      summary: 获取Monitor列表
+      tags:
+      - Monitor模块
+  /news/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取新闻资讯列表
+      parameters:
+      - description: 关键词
+        in: query
+        name: keyword
+        type: string
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.NewsType'
+            type: array
+      summary: 获取新闻资讯列表
+      tags:
+      - 新闻模块
+  /order/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建用户订单，支持多个商品一次性提交
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 创建订单请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建用户订单
+      tags:
+      - 订单
+  /order/detail/{order_item_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取订单详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 订单ID
+        in: path
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OrderDetailResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 订单不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取订单详情
+      tags:
+      - 订单
+  /order/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户订单列表，可根据状态筛选
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 订单状态：0-待付款，1-已付款，2-已发货，3-已完成，4-已取消；不传则查询所有状态
+        in: query
+        name: status
+        type: integer
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.OrderListResponse'
+      summary: 获取订单列表
+      tags:
+      - 订单
+  /order/products:
+    get:
+      consumes:
+      - application/json
+      description: 根据订单ID查询该订单下的所有商品和优惠券信息
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 订单ID
+        in: query
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 订单商品详情
+          schema:
+            $ref: '#/definitions/model.OrderProductsResponse'
+      summary: 获取订单商品详情
+      tags:
+      - 订单
+  /order/status:
+    post:
+      consumes:
+      - application/json
+      description: 根据订单ID更新订单状态
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 更新订单状态请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateOrderStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 操作成功
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误或非法的状态转换
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 订单不存在或无权限
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 更新订单状态
+      tags:
+      - 订单
+  /point/exchange/exchange:
+    post:
+      consumes:
+      - application/json
+      description: 使用积分兑换优惠券或兑换券
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 兑换请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.PointExchangeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 兑换积分
+      tags:
+      - 积分兑换
+  /point/exchange/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取所有积分兑换配置项
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PointExchangeConfigListResponse'
+      summary: 获取积分兑换配置列表
+      tags:
+      - 积分兑换
+  /product/detail:
+    get:
+      consumes:
+      - application/json
+      description: 获取商品详情
+      parameters:
+      - description: 商品ID
+        in: query
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ProductListItemDTO'
+      summary: 获取商品详情
+      tags:
+      - 商品模块
+  /product/details:
+    get:
+      consumes:
+      - application/json
+      description: 根据购物车ID列表查询对应的商品详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        type: string
+      - description: 购物车ID列表
+        in: query
+        name: cart_ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 商品详情列表
+          schema:
+            items:
+              $ref: '#/definitions/model.ProductListItemDTO'
+            type: array
+      summary: 通过购物车ID查询商品详情
+      tags:
+      - 商品
+  /product/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取商品列表，包含分类和详细信息
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ProductListResponse'
+            type: array
+      summary: 获取商品列表
+      tags:
+      - 商品模块
+  /product/recommend:
+    get:
+      consumes:
+      - application/json
+      description: 获取推荐商品列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.ProductListResponse'
+            type: array
+      summary: 获取推荐商品列表
+      tags:
+      - 商品模块
+  /refund/cancel:
+    post:
+      consumes:
+      - application/json
+      description: 撤销处理中的退款申请，恢复原订单状态
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 退款撤销信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CancelRefundRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 退款单不存在或无权限
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "422":
+          description: 当前退款单状态不允许撤销
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 撤销退款申请
+      tags:
+      - 退款
+  /refund/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建退款申请
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 创建退款请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.RefundItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 权限不足
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建退款单
+      tags:
+      - 退款
+  /refund/delete/{refund_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除用户的退款记录
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 退款单ID
+        in: path
+        name: refund_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 退款单不存在或无权限
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 删除退款记录
+      tags:
+      - 退款
+  /refund/detail/{refund_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取退款单详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 退款单ID
+        in: path
+        name: refund_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.RefundDetailResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 退款单不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取退款单详情
+      tags:
+      - 退款
+  /refund/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取用户退款单列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 退款状态：0-待处理，1-退款中，2-已退款，3-已拒绝；不传则查询所有状态
+        in: query
+        name: status
+        type: integer
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.RefundListResponse'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取退款单列表
+      tags:
+      - 退款
+  /review/comment:
+    post:
+      consumes:
+      - application/json
+      description: 对商品评价进行评论（一级评论）
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 评论信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateEvaluateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 评价不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建主评论
+      tags:
+      - 评价
+  /review/create:
+    post:
+      consumes:
+      - application/json
+      description: 对已购买的商品进行评价
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 评价信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateReviewRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 已评价过该商品或订单不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建商品评价
+      tags:
+      - 评价
+  /review/delete/{review_id}:
+    delete:
+      consumes:
+      - application/json
+      description: 删除用户自己的商品评价
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 评价ID
+        in: path
+        name: review_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 无权限删除该评价
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 评价不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 删除商品评价
+      tags:
+      - 评价
+  /review/detail/{review_id}:
+    get:
+      consumes:
+      - application/json
+      description: 根据评价ID获取评价详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 评价ID
+        in: path
+        name: review_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ReviewDetailResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 评价不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取评价详情
+      tags:
+      - 评价
+  /review/increment_counter:
+    post:
+      consumes:
+      - application/json
+      description: 更新评价的浏览人数、评价人数或点赞人数
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        type: string
+      - description: 计数器更新信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateReviewCounterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 评价不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 更新评价计数器
+      tags:
+      - 评价
+  /review/product/{product_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取指定商品的评价列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 商品ID
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ReviewListResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取商品评价列表
+      tags:
+      - 评价
+  /review/reply:
+    post:
+      consumes:
+      - application/json
+      description: 回复商品评价
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 回复信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateEvaluateReplyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 评价不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建评价回复
+      tags:
+      - 评价
+  /review/update_anonymous:
+    post:
+      consumes:
+      - application/json
+      description: 设置评论为匿名或公开状态
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 匿名状态信息
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateEvaluateAnonymousRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 评论不存在或您没有权限操作
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 更新评论匿名状态
+      tags:
+      - 评价
+  /review/user:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的评价列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 页码
+        in: query
+        name: page
+        type: integer
+      - description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ReviewListResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取用户评价列表
+      tags:
+      - 评价
+  /review/user/tab:
+    get:
+      consumes:
+      - application/json
+      description: 获取当前用户的待评价、已评价或全部评价列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - default: all
+        description: 标签类型(all:全部;pending:待评价;completed:已评价)
+        in: query
+        name: tab
+        type: string
+      - default: 1
+        description: 页码
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: 每页数量
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserReviewListResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 按标签获取用户评价列表
+      tags:
+      - 评价
+  /withdraw/create:
+    post:
+      consumes:
+      - application/json
+      description: 创建提现申请
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 创建提现请求
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateWithdrawRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "403":
+          description: 余额不足
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 创建提现单
+      tags:
+      - 提现
+  /withdraw/detail/{withdraw_id}:
+    get:
+      consumes:
+      - application/json
+      description: 获取提现单详情
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 提现单ID
+        in: path
+        name: withdraw_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.WithdrawDetailResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "404":
+          description: 提现单不存在
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取提现单详情
+      tags:
+      - 提现
+  /withdraw/list:
+    get:
+      consumes:
+      - application/json
+      description: 获取提现单列表
+      parameters:
+      - description: Bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 提现状态(0:待审核;1:处理中;2:已完成;3:已拒绝)
+        in: query
+        name: status
+        type: integer
+      - description: 页码，默认1
+        in: query
+        name: page
+        type: integer
+      - description: 每页条数，默认10
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.WithdrawListResponse'
+        "400":
+          description: 参数错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "401":
+          description: 未授权
+          schema:
+            $ref: '#/definitions/v1.Response'
+        "500":
+          description: 服务器内部错误
+          schema:
+            $ref: '#/definitions/v1.Response'
+      summary: 获取提现单列表
+      tags:
+      - 提现
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

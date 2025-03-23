@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package grpc;
+option go_package = ".;grpc";
+service PushMessageService {
+  rpc StreamMessages (stream PushMessageRequest) returns (stream PushMessageResponse);
+}
+
+message PushMessageRequest {
+  string UserId = 1;
+  string To = 2;
+  bytes Data = 3;
+}
+
+message PushMessageResponse {
+  int32 Code = 1;
+  string Message = 2;
+  bytes Data = 3;
+}

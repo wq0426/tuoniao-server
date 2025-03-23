@@ -1,0 +1,116 @@
+version: "3"
+
+# 声明一个名为network的networks,subnet为network的子网地址,默认网关是177.7.0.1
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '177.7.0.0/16'
+        
+# 设置mysql，redis持久化保存
+volumes:
+  mysql:
+  redis:
+  
+services:
+  mysql:
+    image: mysql:5.6
+    hostname: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=EwqT42v1s2a78
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=flashbear
+    networks:
+      network:
+        ipv4_address: 177.7.0.13
+    volumes:
+      - ./data/mysql/user:/var/lib/mysql
+      - ./conf/mysql/conf.d:/etc/mysql/conf.d
+
+  redis:
+    image: redis:7.2.6
+    container_name: redis
+    privileged: true
+    ports:
+      - "6379:6379"
+    networks:
+      network:
+        ipv4_address: 177.7.0.14
+    volumes:
+      - ./data/redis:/data  # 持久化数据到本地 ./data/redis 目录
+      - ./conf/redis/redis.conf:/etc/redis.conf  # 挂载本地 redis.conf 到容器中
+    command: [ "redis-server", "/etc/redis.conf" ]  # 使用自定义配置文件启动 Redis
+    restart: always  # 容器失败时自动重启
+
+  server:
+    image: golang:alpine
+    #build:
+    #  context: ../../server
+    #  dockerfile: ./Dockerfile
+    container_name: gva-server
+    restart: always
+    ports:
+      - '8888:8888'
+    #entrypoint: ["./server", "-c", "config.docker.local.yaml"]
+    #entrypoint: [ "tail", "-f", "/dev/null" ]
+    entrypoint: ["/bin/sh", "/go/src/start_server.sh"]
+    links:
+      - mysql
+      - redis
+    networks:
+      network:
+        ipv4_address: 177.7.0.12
+    volumes:
+      - /Users/ac/go/src/flashbear/admin/server:/go/src
+
+  web:
+    image: docker-compose-web:latest
+#    build:
+#      context: ../../web
+#      dockerfile: ./Dockerfile
+    container_name: gva-web
+    restart: always
+    ports:
+      - '8080:8080'
+    depends_on:
+      - server
+    command: [ 'nginx-debug', '-g', 'daemon off;' ]
+    networks:
+      network:
+        ipv4_address: 177.7.0.11
+    volumes:
+      - /Users/ac/go/src/flashbear/admin/web/.docker-compose/nginx/conf.d/my.conf:/etc/nginx/conf.d/my.conf
+      - /Users/ac/go/src/flashbear/admin/web/dist:/usr/share/nginx/html/dist
+
+  country-server:
+    image: golang:alpine
+    container_name:   country-server
+    restart: always
+    ports:
+      - '8889:8889'
+    entrypoint: [ "/bin/sh", "/go/src/start_server.sh" ]
+    networks:
+      network:
+        ipv4_address: 177.7.0.22
+    volumes:
+      - /Users/ac/go/src/countrybattle/admin/server:/go/src
+
+  country-web:
+    image: docker-compose-web:latest
+    container_name:  country-web
+    restart: always
+    ports:
+      - '8081:8081'
+    depends_on:
+      - server
+    command: [ 'nginx-debug', '-g', 'daemon off;' ]
+    networks:
+      network:
+        ipv4_address: 177.7.0.21
+    volumes:
+      - /Users/ac/go/src/countrybattle/admin/web/.docker-compose/nginx/conf.d/my.conf:/etc/nginx/conf.d/my.conf
+      - /Users/ac/go/src/countrybattle/admin/web/dist:/usr/share/nginx/html/dist

@@ -1,0 +1,39 @@
+env: local
+debug: false
+http:
+  host: 0.0.0.0
+  port: 8289
+websocket:
+  host: 0.0.0.0
+  port: 50053
+security:
+  api_sign:
+    app_key: jDQPEdXjz0Xk
+    app_security: QP#$^I9L0*zpG5nR%x5tWFT%Xf4dT41*
+    salt: fvBPA##&IHKfa2pt
+  jwt:
+    key: QQYnRFerJTSEcrfB89fw8prOaObmrch8
+data:
+  db:
+    user:
+      driver: mysql
+      dsn: root:EwqT42v1s2a78@tcp(127.0.0.1:3306)/liar?charset=utf8mb4&parseTime=True&loc=Local
+      dsn_admin: root:EwqT42v1s2a78@tcp(127.0.0.1:3306)/liar_admin?charset=utf8mb4&parseTime=True&loc=Local
+    #    user:
+    #      driver: postgres
+    #      dsn: host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai
+    redis:
+      addr: 127.0.0.1:6379
+      password: "71xa9mp"
+      db: 4
+      read_timeout: 0.2s
+      write_timeout: 0.2s
+
+log:
+  log_level: debug
+  encoding: console           # json or console
+  log_file_name: "./storage/logs/server.log"
+  max_backups: 30
+  max_age: 7
+  max_size: 1024
+  compress: true

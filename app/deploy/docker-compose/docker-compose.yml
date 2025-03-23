@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  user-db:
+    image: mysql:8.2
+    hostname: mysql
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=EwqT42v1s2a78
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=flashbear
+    volumes:
+      - ./data/mysql/user:/var/lib/mysql
+      - ./conf/mysql/conf.d:/etc/mysql/conf.d
+
+  redis:
+    image: redis:7.2.6
+    container_name: my-redis
+    privileged: true
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/redis:/data  # 持久化数据到本地 ./data/redis 目录
+      - ./conf/redis/redis.conf:/etc/redis.conf  # 挂载本地 redis.conf 到容器中
+    command: [ "redis-server", "/etc/redis.conf" ]  # 使用自定义配置文件启动 Redis
+    restart: always  # 容器失败时自动重启

@@ -1,0 +1,19 @@
+2024/11/03 02:26:15 maxprocs: Leaving GOMAXPROCS=16: CPU quota undefined
+您正在使用命令行的-c参数传递的值,config的路径为/go/src/config.docker.local.yaml
+[github.com/flipped-aurora/gin-vue-admin/server]2024-11-03 02:26:15.580	[34minfo[0m	/go/src/initialize/gorm_mysql.go:29	==========> GormMysql: {"DriverName":"","ServerVersion":"","DSN":"root:Aa@6447985@tcp(gva-mysql:3306)/qmPlus?charset=utf8mb4\u0026parseTime=True\u0026loc=Local","DSNConfig":null,"Conn":null,"SkipInitializeWithVersion":false,"DefaultStringSize":191,"DefaultDatetimePrecision":null,"DisableWithReturning":false,"DisableDatetimePrecision":false,"DontSupportRenameIndex":false,"DontSupportRenameColumn":false,"DontSupportForShareClause":false,"DontSupportNullAsDefaultValue":false,"DontSupportRenameColumnUnique":false,"DontSupportDropConstraint":false}
+
+2024/11/03 02:26:15 [35m/go/src/initialize/gorm_mysql.go:30
+[0m[31m[error] [0mfailed to initialize database, got error dial tcp 127.0.0.1:3306: connect: connection refused
+[github.com/flipped-aurora/gin-vue-admin/server]2024-11-03 02:26:15.589	[34minfo[0m	/go/src/initialize/gorm_mysql.go:31	==========> Mysql: dial tcp 127.0.0.1:3306: connect: connection refused
+RunWindowsServer UseMultipoint false
+RunWindowsServer UseRedis true
+[github.com/flipped-aurora/gin-vue-admin/server]2024-11-03 02:26:15.682	[31merror[0m	/go/src/initialize/redis.go:31	redis connect ping failed, err:	{"name": "", "error": "dial tcp: lookup gva-redis on 127.0.0.11:53: no such host"}
+panic: dial tcp: lookup gva-redis on 127.0.0.11:53: no such host
+
+goroutine 1 [running]:
+github.com/flipped-aurora/gin-vue-admin/server/initialize.Redis(...)
+	/go/src/initialize/redis.go:42
+github.com/flipped-aurora/gin-vue-admin/server/core.RunWindowsServer()
+	/go/src/core/server.go:22 +0x478
+main.main()
+	/go/src/main.go:37 +0xf2

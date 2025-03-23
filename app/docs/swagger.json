@@ -1,0 +1,5630 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "鸵小妥API",
+        "contact": {
+            "email": "wq0426@163.com"
+        },
+        "version": "1.0.2"
+    },
+    "host": "127.0.0.1:8289",
+    "paths": {
+        "/account/code": {
+            "post": {
+                "description": "发送验证码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "备注 (type 1:注册 2:登录 3:找回密码 4:修改手机号 5:重新绑定 6:交友密码)",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.CryptoRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/v1.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/account/login": {
+            "post": {
+                "description": "支持手机验证码和密码登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "账号登录",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/v1.LoginResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/profile": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取用户信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/v1.GetProfileResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "修改昵称和头像",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "修改昵称和头像",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "修改昵称和头像",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.NicknameAvatar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/v1.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/account/reset": {
+            "post": {
+                "description": "通过手机号和新密码重置用户密码",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "重置用户密码",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/v1.ResetPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/v1.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/account/wechat/decrypt": {
+            "post": {
+                "description": "使用session_key解密微信前端传来的加密数据，获取用户信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "账户"
+                ],
+                "summary": "解密微信加密数据",
+                "parameters": [
+                    {
+                        "description": "微信加密数据请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.WeChatEncryptedDataRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/v1.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.WeChatDecryptResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/wechat/login/callback": {
+            "get": {
+                "description": "处理微信登录回调",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "微信登录回调",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "微信授权临时票据",
+                        "name": "code",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "状态参数",
+                        "name": "state",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "0": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginResponseData"
+                        }
+                    }
+                }
+            }
+        },
+        "/account/wechat_mini_login": {
+            "post": {
+                "description": "使用微信小程序临时登录凭证登录并获取平台token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "账户"
+                ],
+                "summary": "微信小程序登录",
+                "parameters": [
+                    {
+                        "description": "微信登录请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.WeChatLoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/v1.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.WeChatLoginResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/add": {
+            "post": {
+                "description": "新增用户收货地址",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户地址"
+                ],
+                "summary": "新增用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "新增地址请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AddAddressRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/delete": {
+            "post": {
+                "description": "删除用户收货地址",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户地址"
+                ],
+                "summary": "删除用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "删除地址请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeleteAddressRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/address/list": {
+            "get": {
+                "description": "获取用户所有收货地址",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户地址"
+                ],
+                "summary": "获取用户地址列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.UserAddress"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/address/update": {
+            "post": {
+                "description": "更新用户收货地址",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户地址"
+                ],
+                "summary": "更新用户地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "更新地址请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateAddressRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/balance/records": {
+            "get": {
+                "description": "分页查询用户余额的所有变动记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "查询用户余额变动记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BalanceRecordResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/exchange/records": {
+            "get": {
+                "description": "分页查询用户的积分兑换记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "查询用户积分兑换记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BalanceRecordResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/info": {
+            "get": {
+                "description": "获取用户的积分等资产信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "获取用户资产",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.UserAssetResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/recharge": {
+            "post": {
+                "description": "给用户账户充值指定金额",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "充值用户余额",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "充值请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.RechargeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/withdraw": {
+            "post": {
+                "description": "从用户账户提取指定金额",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "从用户余额提现",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "提现请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.WithdrawRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/asset/withdraw/records": {
+            "get": {
+                "description": "分页查询用户的提现记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户资产"
+                ],
+                "summary": "查询用户提现记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.BalanceRecordResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/banner/list": {
+            "get": {
+                "description": "获取首页Banner列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "首页模块"
+                ],
+                "summary": "获取首页Banner列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.BannerResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/add": {
+            "post": {
+                "description": "添加商品到购物车，如果已存在则数量加1",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车"
+                ],
+                "summary": "添加商品到购物车",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "添加购物车请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AddToCartRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/delete": {
+            "post": {
+                "description": "删除购物车中的商品，支持批量删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车"
+                ],
+                "summary": "删除购物车商品",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "删除购物车请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.DeleteCartItemsRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/cart/list": {
+            "get": {
+                "description": "获取用户购物车中未处理的商品列表，按店铺分组",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "购物车"
+                ],
+                "summary": "获取用户购物车列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.CartStoreDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/coupon/claim": {
+            "post": {
+                "description": "根据优惠券ID领取优惠券，如果已领取会提示",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "优惠券"
+                ],
+                "summary": "领取优惠券",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "领取优惠券请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ClaimCouponRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupon/detail": {
+            "get": {
+                "description": "根据优惠券ID获取优惠券详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "优惠券"
+                ],
+                "summary": "获取优惠券详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "优惠券ID",
+                        "name": "coupon_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.CouponDetailResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/coupon/list": {
+            "get": {
+                "description": "获取用户所有优惠券列表，可根据状态过滤",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "优惠券"
+                ],
+                "summary": "获取用户所有优惠券",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ProductCouponDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/coupon/product": {
+            "get": {
+                "description": "获取用户针对特定商品的优惠券列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "优惠券"
+                ],
+                "summary": "获取用户特定商品的优惠券",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "商品ID",
+                        "name": "product_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.UserCoupon"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/earning/add": {
+            "post": {
+                "description": "添加用户的收益记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "收益"
+                ],
+                "summary": "添加用户收益",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "收益信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.AddEarningRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/earning/list": {
+            "get": {
+                "description": "获取用户的收益记录列表，可按日期筛选",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "收益"
+                ],
+                "summary": "获取用户收益列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "日期，格式：YYYY-MM-DD",
+                        "name": "date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.EarningListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/market/mine": {
+            "get": {
+                "description": "获取用户已售出和未售出的鸡蛋情况",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自由市场"
+                ],
+                "summary": "获取用户鸡蛋销售情况",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.FreeMarketMineResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/market/update-price": {
+            "post": {
+                "description": "更新用户未售出的鸡蛋价格",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自由市场"
+                ],
+                "summary": "更新用户鸡蛋价格",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "更新鸡蛋价格请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateEggPriceRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/monitor/list": {
+            "get": {
+                "description": "获取Monitor列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Monitor模块"
+                ],
+                "summary": "获取Monitor列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.MonitorResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/news/list": {
+            "get": {
+                "description": "获取新闻资讯列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "新闻模块"
+                ],
+                "summary": "获取新闻资讯列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "关键词",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.NewsType"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/order/create": {
+            "post": {
+                "description": "创建用户订单，支持多个商品一次性提交",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单"
+                ],
+                "summary": "创建用户订单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建订单请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateOrderRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/detail/{order_item_id}": {
+            "get": {
+                "description": "获取订单详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单"
+                ],
+                "summary": "获取订单详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "订单ID",
+                        "name": "order_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "订单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/list": {
+            "get": {
+                "description": "获取用户订单列表，可根据状态筛选",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单"
+                ],
+                "summary": "获取订单列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "订单状态：0-待付款，1-已付款，2-已发货，3-已完成，4-已取消；不传则查询所有状态",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderListResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/products": {
+            "get": {
+                "description": "根据订单ID查询该订单下的所有商品和优惠券信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单"
+                ],
+                "summary": "获取订单商品详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "订单ID",
+                        "name": "order_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "订单商品详情",
+                        "schema": {
+                            "$ref": "#/definitions/model.OrderProductsResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/order/status": {
+            "post": {
+                "description": "根据订单ID更新订单状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "订单"
+                ],
+                "summary": "更新订单状态",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "更新订单状态请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateOrderStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "操作成功",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误或非法的状态转换",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "订单不存在或无权限",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/point/exchange/exchange": {
+            "post": {
+                "description": "使用积分兑换优惠券或兑换券",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "积分兑换"
+                ],
+                "summary": "兑换积分",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "兑换请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.PointExchangeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/point/exchange/list": {
+            "get": {
+                "description": "获取所有积分兑换配置项",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "积分兑换"
+                ],
+                "summary": "获取积分兑换配置列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PointExchangeConfigListResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/detail": {
+            "get": {
+                "description": "获取商品详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品模块"
+                ],
+                "summary": "获取商品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "商品ID",
+                        "name": "product_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ProductListItemDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/product/details": {
+            "get": {
+                "description": "根据购物车ID列表查询对应的商品详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品"
+                ],
+                "summary": "通过购物车ID查询商品详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "type": "string",
+                        "description": "购物车ID列表",
+                        "name": "cart_ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "商品详情列表",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ProductListItemDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/list": {
+            "get": {
+                "description": "获取商品列表，包含分类和详细信息",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品模块"
+                ],
+                "summary": "获取商品列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ProductListResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/product/recommend": {
+            "get": {
+                "description": "获取推荐商品列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "商品模块"
+                ],
+                "summary": "获取推荐商品列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ProductListResponse"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/refund/cancel": {
+            "post": {
+                "description": "撤销处理中的退款申请，恢复原订单状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "退款"
+                ],
+                "summary": "撤销退款申请",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "退款撤销信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CancelRefundRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "退款单不存在或无权限",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "422": {
+                        "description": "当前退款单状态不允许撤销",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/refund/create": {
+            "post": {
+                "description": "创建退款申请",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "退款"
+                ],
+                "summary": "创建退款单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建退款请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.RefundItemRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "权限不足",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/refund/delete/{refund_id}": {
+            "delete": {
+                "description": "删除用户的退款记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "退款"
+                ],
+                "summary": "删除退款记录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "退款单ID",
+                        "name": "refund_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "退款单不存在或无权限",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/refund/detail/{refund_id}": {
+            "get": {
+                "description": "获取退款单详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "退款"
+                ],
+                "summary": "获取退款单详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "退款单ID",
+                        "name": "refund_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.RefundDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "退款单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/refund/list": {
+            "get": {
+                "description": "获取用户退款单列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "退款"
+                ],
+                "summary": "获取退款单列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "退款状态：0-待处理，1-退款中，2-已退款，3-已拒绝；不传则查询所有状态",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.RefundListResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/comment": {
+            "post": {
+                "description": "对商品评价进行评论（一级评论）",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "创建主评论",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "评论信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateEvaluateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "评价不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/create": {
+            "post": {
+                "description": "对已购买的商品进行评价",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "创建商品评价",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "评价信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateReviewRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "已评价过该商品或订单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/delete/{review_id}": {
+            "delete": {
+                "description": "删除用户自己的商品评价",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "删除商品评价",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "评价ID",
+                        "name": "review_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "无权限删除该评价",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "评价不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/detail/{review_id}": {
+            "get": {
+                "description": "根据评价ID获取评价详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "获取评价详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "评价ID",
+                        "name": "review_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ReviewDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "评价不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/increment_counter": {
+            "post": {
+                "description": "更新评价的浏览人数、评价人数或点赞人数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "更新评价计数器",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header"
+                    },
+                    {
+                        "description": "计数器更新信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateReviewCounterRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "评价不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/product/{product_id}": {
+            "get": {
+                "description": "获取指定商品的评价列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "获取商品评价列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "商品ID",
+                        "name": "product_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ReviewListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/reply": {
+            "post": {
+                "description": "回复商品评价",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "创建评价回复",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "回复信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateEvaluateReplyRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "评价不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/update_anonymous": {
+            "post": {
+                "description": "设置评论为匿名或公开状态",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "更新评论匿名状态",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "匿名状态信息",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.UpdateEvaluateAnonymousRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "评论不存在或您没有权限操作",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/user": {
+            "get": {
+                "description": "获取当前用户的评价列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "获取用户评价列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ReviewListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/review/user/tab": {
+            "get": {
+                "description": "获取当前用户的待评价、已评价或全部评价列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "评价"
+                ],
+                "summary": "按标签获取用户评价列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "all",
+                        "description": "标签类型(all:全部;pending:待评价;completed:已评价)",
+                        "name": "tab",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "每页数量",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.UserReviewListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/withdraw/create": {
+            "post": {
+                "description": "创建提现申请",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "提现"
+                ],
+                "summary": "创建提现单",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "创建提现请求",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateWithdrawRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "403": {
+                        "description": "余额不足",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/withdraw/detail/{withdraw_id}": {
+            "get": {
+                "description": "获取提现单详情",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "提现"
+                ],
+                "summary": "获取提现单详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "提现单ID",
+                        "name": "withdraw_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.WithdrawDetailResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "提现单不存在",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/withdraw/list": {
+            "get": {
+                "description": "获取提现单列表",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "提现"
+                ],
+                "summary": "获取提现单列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer token",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "提现状态(0:待审核;1:处理中;2:已完成;3:已拒绝)",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码，默认1",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页条数，默认10",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.WithdrawListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "参数错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "401": {
+                        "description": "未授权",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "服务器内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/v1.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.AddAddressRequest": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "name",
+                "phone",
+                "province",
+                "street"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "is_default": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AddEarningRequest": {
+            "type": "object",
+            "required": [
+                "amount",
+                "earning_type"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "收益数量",
+                    "type": "integer"
+                },
+                "earning_type": {
+                    "description": "收益类型",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.EarningType"
+                        }
+                    ]
+                }
+            }
+        },
+        "model.AddToCartRequest": {
+            "type": "object",
+            "required": [
+                "product_id",
+                "quantity"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Address": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "detail": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isDefault": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.AddressInfo": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "detail_address": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "district": {
+                    "description": "区县",
+                    "type": "string"
+                },
+                "province": {
+                    "description": "省份",
+                    "type": "string"
+                },
+                "receiver_name": {
+                    "description": "收货人姓名",
+                    "type": "string"
+                },
+                "receiver_phone": {
+                    "description": "收货人电话",
+                    "type": "string"
+                }
+            }
+        },
+        "model.BalanceRecordResponse": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "description": "当前页码",
+                    "type": "integer"
+                },
+                "page_size": {
+                    "description": "每页条数",
+                    "type": "integer"
+                },
+                "records": {
+                    "description": "记录列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.UserAssetRecordDTO"
+                    }
+                },
+                "total": {
+                    "description": "总记录数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.BannerResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "img": {
+                    "description": "图片链接",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "跳转链接",
+                    "type": "string"
+                }
+            }
+        },
+        "model.CancelRefundRequest": {
+            "type": "object",
+            "required": [
+                "refund_id"
+            ],
+            "properties": {
+                "refund_id": {
+                    "description": "退款单ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartProductDTO": {
+            "type": "object",
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "coupon_id": {
+                    "type": "integer"
+                },
+                "coupon_price": {
+                    "type": "number"
+                },
+                "courier_fee_min": {
+                    "type": "number"
+                },
+                "current_price": {
+                    "type": "number"
+                },
+                "member_discount": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CartStoreDTO": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.CartProductDTO"
+                    }
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "store_name": {
+                    "type": "string"
+                },
+                "store_url": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ClaimCouponRequest": {
+            "type": "object",
+            "required": [
+                "coupon_id"
+            ],
+            "properties": {
+                "coupon_id": {
+                    "description": "优惠券ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CouponDetailResponse": {
+            "type": "object",
+            "properties": {
+                "available_min_price": {
+                    "description": "可用最低金额",
+                    "type": "number"
+                },
+                "coupon_name": {
+                    "description": "优惠券名称",
+                    "type": "string"
+                },
+                "coupon_price": {
+                    "description": "优惠券金额",
+                    "type": "number"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "deadline": {
+                    "description": "截止时间",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型（1:优惠券；2:兑换券）",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateEvaluateReplyRequest": {
+            "type": "object",
+            "required": [
+                "content",
+                "evaluate_id"
+            ],
+            "properties": {
+                "content": {
+                    "description": "回复内容",
+                    "type": "string"
+                },
+                "evaluate_id": {
+                    "description": "被回复的评价ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateEvaluateRequest": {
+            "type": "object",
+            "required": [
+                "content",
+                "review_id"
+            ],
+            "properties": {
+                "content": {
+                    "description": "评论内容",
+                    "type": "string"
+                },
+                "review_id": {
+                    "description": "评价ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateOrderRequest": {
+            "type": "object",
+            "required": [
+                "address",
+                "items",
+                "payment_method"
+            ],
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/model.Address"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.OrderItemRequest"
+                    }
+                },
+                "payment_method": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.CreateReviewRequest": {
+            "type": "object",
+            "required": [
+                "delivery_rating",
+                "freshness_rating",
+                "order_item_id",
+                "packaging_rating",
+                "product_id",
+                "rating",
+                "service_rating"
+            ],
+            "properties": {
+                "content": {
+                    "description": "评价内容",
+                    "type": "string"
+                },
+                "delivery_rating": {
+                    "description": "配送评分",
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
+                },
+                "freshness_rating": {
+                    "description": "新鲜程度评分",
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
+                },
+                "images": {
+                    "description": "评价图片数组",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_anonymous": {
+                    "description": "是否匿名评价",
+                    "type": "boolean"
+                },
+                "order_item_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "packaging_rating": {
+                    "description": "包装评分",
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "rating": {
+                    "description": "商品评分",
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
+                },
+                "service_rating": {
+                    "description": "服务态度评分",
+                    "type": "integer",
+                    "maximum": 5,
+                    "minimum": 1
+                }
+            }
+        },
+        "model.CreateWithdrawRequest": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "提现金额",
+                    "type": "number"
+                }
+            }
+        },
+        "model.DeleteAddressRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.DeleteCartItemsRequest": {
+            "type": "object",
+            "required": [
+                "ids"
+            ],
+            "properties": {
+                "ids": {
+                    "description": "Comma-separated list of cart IDs",
+                    "type": "string"
+                }
+            }
+        },
+        "model.EarningListDateAmountItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "收益数量",
+                    "type": "integer"
+                },
+                "date": {
+                    "description": "日期，格式：YYYY-MM",
+                    "type": "string"
+                },
+                "image": {
+                    "description": "图片",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.EarningListDateItem": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "description": "收益数量",
+                    "type": "integer"
+                },
+                "amount_item": {
+                    "description": "收益数量",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.EarningListDateAmountItem"
+                    }
+                },
+                "date": {
+                    "description": "日期，格式：YYYY-MM",
+                    "type": "string"
+                }
+            }
+        },
+        "model.EarningListItem": {
+            "type": "object",
+            "properties": {
+                "date_list": {
+                    "description": "日期列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.EarningListDateItem"
+                    }
+                },
+                "id": {
+                    "description": "收益类型",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.EarningType"
+                        }
+                    ]
+                },
+                "type_name": {
+                    "description": "分类名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.EarningListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "收益列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.EarningListItem"
+                    }
+                }
+            }
+        },
+        "model.EarningType": {
+            "type": "integer",
+            "enum": [
+                1,
+                2,
+                3
+            ],
+            "x-enum-comments": {
+                "EarningTypeBird": "商品鸟",
+                "EarningTypeBreeding": "种鸟",
+                "EarningTypeEgg": "鸟蛋"
+            },
+            "x-enum-varnames": [
+                "EarningTypeEgg",
+                "EarningTypeBird",
+                "EarningTypeBreeding"
+            ]
+        },
+        "model.FreeMarketMineResponse": {
+            "type": "object",
+            "properties": {
+                "no_sell_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.NoSellEggDTO"
+                    }
+                },
+                "others": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.NoSellEggDTO"
+                    }
+                },
+                "selled_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.SelledEggDTO"
+                    }
+                },
+                "summary": {
+                    "$ref": "#/definitions/model.SummaryDTO"
+                }
+            }
+        },
+        "model.LoginResponseData": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "bind_info": {
+                    "$ref": "#/definitions/model.WeChatUserInfo"
+                },
+                "expired": {
+                    "type": "integer"
+                },
+                "user_info": {
+                    "$ref": "#/definitions/model.UserInfo"
+                }
+            }
+        },
+        "model.MonitorResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "img": {
+                    "description": "图片链接",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "跳转链接",
+                    "type": "string"
+                }
+            }
+        },
+        "model.NewsResponse": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "内容",
+                    "type": "string"
+                },
+                "date": {
+                    "description": "日期",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "img": {
+                    "description": "图片链接",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "url": {
+                    "description": "跳转链接",
+                    "type": "string"
+                }
+            }
+        },
+        "model.NewsType": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "新闻列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.NewsResponse"
+                    }
+                },
+                "title": {
+                    "description": "类型标题",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.NicknameAvatar": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "description": "收获地址",
+                    "type": "string"
+                },
+                "avatar_base64": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "birthday": {
+                    "description": "出生日期",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "性别",
+                    "type": "integer"
+                },
+                "member_level": {
+                    "description": "会员等级",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "description": "昵称",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "绑定手机号",
+                    "type": "string"
+                }
+            }
+        },
+        "model.NoSellEggDTO": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "egg_num": {
+                    "type": "integer"
+                },
+                "egg_price": {
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderDetailResponse": {
+            "type": "object",
+            "properties": {
+                "actual_amount": {
+                    "description": "实际支付金额",
+                    "type": "number"
+                },
+                "address": {
+                    "description": "地址信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.AddressInfo"
+                        }
+                    ]
+                },
+                "completed_at": {
+                    "description": "完成时间",
+                    "type": "string"
+                },
+                "coupon_discount": {
+                    "description": "优惠券折扣",
+                    "type": "number"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "member_discount": {
+                    "description": "会员折扣",
+                    "type": "number"
+                },
+                "order_amount": {
+                    "description": "订单金额",
+                    "type": "number"
+                },
+                "order_id": {
+                    "description": "订单基本信息",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单号",
+                    "type": "string"
+                },
+                "pay_method": {
+                    "description": "支付方式",
+                    "type": "integer"
+                },
+                "pay_method_text": {
+                    "description": "支付方式文本",
+                    "type": "string"
+                },
+                "pay_time": {
+                    "description": "支付时间",
+                    "type": "string"
+                },
+                "products": {
+                    "description": "商品信息",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductListItemDTO"
+                    }
+                },
+                "shipped_at": {
+                    "description": "发货时间",
+                    "type": "string"
+                },
+                "shipping_fee": {
+                    "description": "运费",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "订单状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "订单状态文本",
+                    "type": "string"
+                },
+                "store_id": {
+                    "description": "店铺ID",
+                    "type": "integer"
+                },
+                "store_logo": {
+                    "description": "店铺Logo",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "total_price": {
+                    "description": "订单汇总信息",
+                    "type": "number"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.OrderDetails": {
+            "type": "object",
+            "properties": {
+                "order_created": {
+                    "description": "订单创建时间",
+                    "type": "string"
+                },
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单号",
+                    "type": "string"
+                },
+                "order_status": {
+                    "description": "订单状态",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderItemRequest": {
+            "type": "object",
+            "required": [
+                "current_price",
+                "image",
+                "product_id",
+                "product_name",
+                "quantity"
+            ],
+            "properties": {
+                "cart_id": {
+                    "type": "integer"
+                },
+                "coupon_id": {
+                    "type": "integer"
+                },
+                "coupon_price": {
+                    "type": "number"
+                },
+                "courier_fee_min": {
+                    "type": "number"
+                },
+                "current_price": {
+                    "type": "number"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "member_discount": {
+                    "type": "number"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "store_id": {
+                    "type": "integer"
+                },
+                "store_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.OrderListDTO": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "order_no": {
+                    "type": "string"
+                },
+                "pay_time": {
+                    "type": "string"
+                },
+                "payment_method": {
+                    "type": "integer"
+                },
+                "product": {
+                    "$ref": "#/definitions/model.OrderProductDTO"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "status_text": {
+                    "type": "string"
+                },
+                "store_icon": {
+                    "description": "店铺图标",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "total_fee": {
+                    "type": "number"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.OrderListResponse": {
+            "type": "object",
+            "properties": {
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.OrderListDTO"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "page_size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderProductDTO": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "string"
+                },
+                "item_id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.OrderProductsResponse": {
+            "type": "object",
+            "properties": {
+                "products": {
+                    "description": "商品列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductListItemDTO"
+                    }
+                }
+            }
+        },
+        "model.PointExchangeConfigListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.PointExchangeConfigResponse"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.PointExchangeConfigResponse": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "exchange_amount": {
+                    "description": "兑换的金额",
+                    "type": "number"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "images": {
+                    "description": "积分兑换图片",
+                    "type": "string"
+                },
+                "is_exchange": {
+                    "description": "是否可兑换",
+                    "type": "boolean"
+                },
+                "min_amount": {
+                    "description": "可使用的最小金额",
+                    "type": "number"
+                },
+                "points": {
+                    "description": "发放的积分",
+                    "type": "integer"
+                },
+                "required": {
+                    "description": "消费的金额",
+                    "type": "number"
+                },
+                "title": {
+                    "description": "积分兑换标题",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型（1:优惠券；2:兑换券）",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "model.PointExchangeRequest": {
+            "type": "object",
+            "required": [
+                "config_id"
+            ],
+            "properties": {
+                "config_id": {
+                    "description": "兑换配置ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ProductCategory2DTO": {
+            "type": "object",
+            "properties": {
+                "category2_id": {
+                    "type": "integer"
+                },
+                "category2_name": {
+                    "type": "string"
+                },
+                "product_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductListItemDTO"
+                    }
+                }
+            }
+        },
+        "model.ProductCouponDTO": {
+            "type": "object",
+            "properties": {
+                "available_min_price": {
+                    "type": "number"
+                },
+                "coupon_id": {
+                    "type": "integer"
+                },
+                "coupon_name": {
+                    "type": "string"
+                },
+                "coupon_price": {
+                    "type": "number"
+                },
+                "deadline": {
+                    "type": "string"
+                },
+                "is_received": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ProductEvaluateDTO": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "evaluate_content": {
+                    "type": "string"
+                },
+                "evaluate_id": {
+                    "type": "integer"
+                },
+                "evaluate_images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "evaluate_nums": {
+                    "type": "integer"
+                },
+                "evaluate_time": {
+                    "type": "string"
+                },
+                "is_return": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "praise_nums": {
+                    "type": "integer"
+                },
+                "view_nums": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ProductEvaluateList": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "comment_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductEvaluateList"
+                    }
+                },
+                "content": {
+                    "description": "评价内容",
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "created_at_str": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "review_id": {
+                    "description": "评价ID",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProductListItemDTO": {
+            "type": "object",
+            "properties": {
+                "category1_id": {
+                    "type": "integer"
+                },
+                "category2_id": {
+                    "type": "integer"
+                },
+                "coupon_id": {
+                    "type": "integer"
+                },
+                "coupon_price": {
+                    "type": "number"
+                },
+                "courier_fee_max": {
+                    "type": "number"
+                },
+                "courier_fee_min": {
+                    "type": "number"
+                },
+                "header_img": {
+                    "type": "string"
+                },
+                "item_id": {
+                    "type": "integer"
+                },
+                "member_discount": {
+                    "type": "number"
+                },
+                "product_content": {
+                    "type": "string"
+                },
+                "product_coupons": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductCouponDTO"
+                    }
+                },
+                "product_current_price": {
+                    "type": "number"
+                },
+                "product_evaluate": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductEvaluateDTO"
+                    }
+                },
+                "product_evaluate_nums": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "product_images": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "product_is_special": {
+                    "type": "integer"
+                },
+                "product_name": {
+                    "type": "string"
+                },
+                "product_original_price": {
+                    "type": "number"
+                },
+                "product_quantity": {
+                    "type": "integer"
+                },
+                "product_sales": {
+                    "type": "integer"
+                },
+                "product_spec": {
+                    "type": "string"
+                },
+                "product_specification": {
+                    "type": "string"
+                },
+                "product_unit": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProductListResponse": {
+            "type": "object",
+            "properties": {
+                "category1_id": {
+                    "type": "integer"
+                },
+                "category1_name": {
+                    "type": "string"
+                },
+                "category2_list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductCategory2DTO"
+                    }
+                }
+            }
+        },
+        "model.RechargeRequest": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "充值金额，必须大于0",
+                    "type": "number"
+                }
+            }
+        },
+        "model.RefundDetailResponse": {
+            "type": "object",
+            "properties": {
+                "order_detail": {
+                    "description": "订单详情",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.OrderDetails"
+                        }
+                    ]
+                },
+                "refund": {
+                    "description": "退款单信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.RefundOrder"
+                        }
+                    ]
+                }
+            }
+        },
+        "model.RefundItemRequest": {
+            "type": "object",
+            "required": [
+                "order_item_id",
+                "refund_reason",
+                "refund_type"
+            ],
+            "properties": {
+                "images": {
+                    "description": "图片凭证",
+                    "type": "string"
+                },
+                "order_item_id": {
+                    "description": "订单项ID",
+                    "type": "integer"
+                },
+                "refund_reason": {
+                    "description": "退款原因",
+                    "type": "string"
+                },
+                "refund_type": {
+                    "description": "退款类型(1:仅退款;2:退货退款)",
+                    "type": "integer",
+                    "enum": [
+                        1,
+                        2
+                    ]
+                }
+            }
+        },
+        "model.RefundListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "退款列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RefundOrderItem"
+                    }
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "每页条数",
+                    "type": "integer"
+                },
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.RefundOrder": {
+            "type": "object",
+            "properties": {
+                "apply_time": {
+                    "description": "申请时间",
+                    "type": "string"
+                },
+                "completion_time": {
+                    "description": "完成时间",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "header_img": {
+                    "description": "商品图片",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "images": {
+                    "description": "图片凭证",
+                    "type": "string"
+                },
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "order_item_id": {
+                    "description": "订单项ID",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单号",
+                    "type": "string"
+                },
+                "origin_status": {
+                    "description": "原始状态",
+                    "type": "integer"
+                },
+                "price": {
+                    "description": "商品单价",
+                    "type": "number"
+                },
+                "process_time": {
+                    "description": "处理时间",
+                    "type": "string"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "product_name": {
+                    "description": "商品名称",
+                    "type": "string"
+                },
+                "quantity": {
+                    "description": "退款数量",
+                    "type": "integer"
+                },
+                "refund_amount": {
+                    "description": "退款金额",
+                    "type": "number"
+                },
+                "refund_no": {
+                    "description": "退款单号",
+                    "type": "string"
+                },
+                "refund_reason": {
+                    "description": "退款原因",
+                    "type": "string"
+                },
+                "refund_type": {
+                    "description": "退款类型",
+                    "type": "integer"
+                },
+                "reject_reason": {
+                    "description": "拒绝原因",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "退款状态",
+                    "type": "integer"
+                },
+                "store_icon": {
+                    "description": "店铺图标",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.RefundOrderItem": {
+            "type": "object",
+            "properties": {
+                "apply_time": {
+                    "description": "申请时间",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "header_img": {
+                    "description": "商品图片",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "退款单ID",
+                    "type": "integer"
+                },
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单号",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "商品单价",
+                    "type": "number"
+                },
+                "product_name": {
+                    "description": "商品名称",
+                    "type": "string"
+                },
+                "quantity": {
+                    "description": "退款数量",
+                    "type": "integer"
+                },
+                "refund_amount": {
+                    "description": "退款金额",
+                    "type": "number"
+                },
+                "refund_no": {
+                    "description": "退款单号",
+                    "type": "string"
+                },
+                "refund_type": {
+                    "description": "退款类型",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "退款状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "退款状态文本",
+                    "type": "string"
+                },
+                "store_icon": {
+                    "description": "店铺图标",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ReviewDetailResponse": {
+            "type": "object",
+            "properties": {
+                "comment_nums": {
+                    "description": "评论数量",
+                    "type": "integer"
+                },
+                "content": {
+                    "description": "评价内容",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "delivery_rating": {
+                    "description": "配送评分",
+                    "type": "integer"
+                },
+                "evaluate_list": {
+                    "description": "评论和回复列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ProductEvaluateList"
+                    }
+                },
+                "freshness_rating": {
+                    "description": "新鲜程度评分",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "评价ID",
+                    "type": "integer"
+                },
+                "images": {
+                    "description": "评价图片",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_anonymous": {
+                    "description": "是否匿名评价",
+                    "type": "boolean"
+                },
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "order_item_id": {
+                    "description": "订单项ID",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "packaging_rating": {
+                    "description": "包装评分",
+                    "type": "integer"
+                },
+                "price": {
+                    "description": "商品价格",
+                    "type": "number"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "product_image": {
+                    "description": "商品图片",
+                    "type": "string"
+                },
+                "product_name": {
+                    "description": "商品名称",
+                    "type": "string"
+                },
+                "product_spec": {
+                    "description": "商品规格",
+                    "type": "string"
+                },
+                "quantity": {
+                    "description": "购买数量",
+                    "type": "integer"
+                },
+                "rating": {
+                    "description": "商品评分",
+                    "type": "integer"
+                },
+                "service_rating": {
+                    "description": "服务态度评分",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "状态文本",
+                    "type": "string"
+                },
+                "store_icon": {
+                    "description": "店铺图标",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "user_avatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名称",
+                    "type": "string"
+                }
+            }
+        },
+        "model.ReviewListDTO": {
+            "type": "object",
+            "properties": {
+                "evaluate_nums": {
+                    "description": "评价人数",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "评价ID",
+                    "type": "integer"
+                },
+                "is_anonymous": {
+                    "description": "是否匿名",
+                    "type": "boolean"
+                },
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "order_item_id": {
+                    "description": "订单项ID",
+                    "type": "integer"
+                },
+                "order_no": {
+                    "description": "订单编号",
+                    "type": "string"
+                },
+                "order_time": {
+                    "description": "订单时间",
+                    "type": "string"
+                },
+                "praise_nums": {
+                    "description": "点赞人数",
+                    "type": "integer"
+                },
+                "price": {
+                    "description": "商品价格",
+                    "type": "number"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "product_image": {
+                    "description": "商品图片",
+                    "type": "string"
+                },
+                "product_name": {
+                    "description": "商品名称",
+                    "type": "string"
+                },
+                "quantity": {
+                    "description": "购买数量",
+                    "type": "integer"
+                },
+                "review_content": {
+                    "description": "评价内容",
+                    "type": "string"
+                },
+                "review_images": {
+                    "description": "评价图片",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "review_status": {
+                    "description": "评价状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "订单状态文本",
+                    "type": "string"
+                },
+                "store_icon": {
+                    "description": "店铺图标",
+                    "type": "string"
+                },
+                "store_name": {
+                    "description": "店铺名称",
+                    "type": "string"
+                },
+                "user_avatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                },
+                "view_nums": {
+                    "description": "查看人数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ReviewListResponse": {
+            "type": "object",
+            "properties": {
+                "reviews": {
+                    "description": "评价列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ReviewListDTO"
+                    }
+                },
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.ReviewTabType": {
+            "type": "integer",
+            "enum": [
+                0,
+                1,
+                2
+            ],
+            "x-enum-comments": {
+                "ReviewTabAll": "全部评价",
+                "ReviewTabCompleted": "已评价",
+                "ReviewTabPending": "待评价"
+            },
+            "x-enum-varnames": [
+                "ReviewTabAll",
+                "ReviewTabPending",
+                "ReviewTabCompleted"
+            ]
+        },
+        "model.SelledEggDTO": {
+            "type": "object",
+            "properties": {
+                "date": {
+                    "type": "string"
+                },
+                "egg_num": {
+                    "type": "integer"
+                },
+                "egg_price": {
+                    "type": "number"
+                },
+                "total": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.SummaryDTO": {
+            "type": "object",
+            "properties": {
+                "total_no_sell": {
+                    "type": "integer"
+                },
+                "total_selled": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UpdateAddressRequest": {
+            "type": "object",
+            "required": [
+                "city",
+                "district",
+                "id",
+                "name",
+                "phone",
+                "province",
+                "street"
+            ],
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "district": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "street": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UpdateEggPriceRequest": {
+            "type": "object",
+            "required": [
+                "id",
+                "price"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "model.UpdateEvaluateAnonymousRequest": {
+            "type": "object",
+            "required": [
+                "review_id"
+            ],
+            "properties": {
+                "is_anonymous": {
+                    "description": "是否匿名：true-匿名，false-公开",
+                    "type": "boolean"
+                },
+                "review_id": {
+                    "description": "评论ID",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UpdateOrderStatusRequest": {
+            "type": "object",
+            "required": [
+                "order_id"
+            ],
+            "properties": {
+                "order_id": {
+                    "description": "订单ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "订单状态",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.UpdateReviewCounterRequest": {
+            "type": "object",
+            "required": [
+                "review_id"
+            ],
+            "properties": {
+                "review_id": {
+                    "description": "评价ID",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "计数类型：0-浏览，1-评论，2-点赞，3-取消点赞",
+                    "type": "integer",
+                    "enum": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ]
+                }
+            }
+        },
+        "model.UserAddress": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "description": "城市",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "district": {
+                    "description": "区/县",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "description": "是否默认地址",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "收件人姓名",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "联系电话",
+                    "type": "string"
+                },
+                "province": {
+                    "description": "省份",
+                    "type": "string"
+                },
+                "street": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserAssetRecordDTO": {
+            "type": "object",
+            "properties": {
+                "action_num": {
+                    "description": "操作数量",
+                    "type": "number"
+                },
+                "action_type": {
+                    "description": "操作类型：1-增加，2-减少",
+                    "type": "integer"
+                },
+                "asset_type": {
+                    "description": "资产类型：1-积分，2-余额",
+                    "type": "integer"
+                },
+                "business_type": {
+                    "description": "业务类型",
+                    "type": "integer"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "记录ID",
+                    "type": "integer"
+                },
+                "left_num": {
+                    "description": "剩余数量",
+                    "type": "number"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserAssetResponse": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "用户头像",
+                    "type": "string"
+                },
+                "balance": {
+                    "description": "用户余额",
+                    "type": "number"
+                },
+                "coupon_count": {
+                    "description": "用户优惠券数量",
+                    "type": "integer"
+                },
+                "nickname": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "points": {
+                    "description": "用户积分",
+                    "type": "integer"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserCoupon": {
+            "type": "object",
+            "properties": {
+                "available_min_price": {
+                    "description": "可用最低价格",
+                    "type": "number"
+                },
+                "coupon_id": {
+                    "description": "优惠券ID (注意:列名在DB中有拼写错误)",
+                    "type": "integer"
+                },
+                "coupon_name": {
+                    "description": "优惠券名称",
+                    "type": "string"
+                },
+                "coupon_price": {
+                    "description": "优惠券价格",
+                    "type": "number"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deadline": {
+                    "description": "截止时间",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "product_id": {
+                    "description": "商品ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserInfo": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.UserReviewListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "全部评价列表",
+                    "type": "array",
+                    "items": {}
+                },
+                "tab": {
+                    "description": "当前标签",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.ReviewTabType"
+                        }
+                    ]
+                }
+            }
+        },
+        "model.WeChatDecryptResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description": "平台token，如果需要登录",
+                    "type": "string"
+                },
+                "user_info": {
+                    "description": "用户信息",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.WeChatDecryptedInfo"
+                        }
+                    ]
+                }
+            }
+        },
+        "model.WeChatDecryptedInfo": {
+            "type": "object",
+            "properties": {
+                "avatarUrl": {
+                    "description": "用户头像CountryCode     string `json:\"countryCode,omitempty\"`     // 区号",
+                    "type": "string"
+                },
+                "city": {
+                    "description": "用户所在城市",
+                    "type": "string"
+                },
+                "country": {
+                    "description": "用户所在国家",
+                    "type": "string"
+                },
+                "gender": {
+                    "description": "用户性别",
+                    "type": "integer"
+                },
+                "language": {
+                    "description": "用户语言",
+                    "type": "string"
+                },
+                "nickName": {
+                    "description": "用户昵称",
+                    "type": "string"
+                },
+                "province": {
+                    "description": "用户所在省份",
+                    "type": "string"
+                },
+                "watermark": {
+                    "description": "数据水印",
+                    "type": "object",
+                    "properties": {
+                        "appid": {
+                            "description": "小程序appid",
+                            "type": "string"
+                        },
+                        "timestamp": {
+                            "description": "时间戳",
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "model.WeChatEncryptedDataRequest": {
+            "type": "object",
+            "required": [
+                "encryptedData",
+                "iv"
+            ],
+            "properties": {
+                "encryptedData": {
+                    "description": "包括敏感数据在内的完整用户信息的加密数据",
+                    "type": "string"
+                },
+                "iv": {
+                    "description": "加密算法的初始向量",
+                    "type": "string"
+                },
+                "openid": {
+                    "description": "用户唯一标识",
+                    "type": "string"
+                },
+                "sessionKey": {
+                    "description": "会话密钥",
+                    "type": "string"
+                }
+            }
+        },
+        "model.WeChatLoginRequest": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "description": "微信临时登录凭证",
+                    "type": "string"
+                }
+            }
+        },
+        "model.WeChatLoginResponse": {
+            "type": "object",
+            "properties": {
+                "openid": {
+                    "description": "用户唯一标识",
+                    "type": "string"
+                },
+                "session_key": {
+                    "description": "会话密钥",
+                    "type": "string"
+                },
+                "token": {
+                    "description": "平台token",
+                    "type": "string"
+                }
+            }
+        },
+        "model.WeChatUserInfo": {
+            "type": "object",
+            "properties": {
+                "city": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "headimgurl": {
+                    "type": "string"
+                },
+                "nickname": {
+                    "type": "string"
+                },
+                "openid": {
+                    "type": "string"
+                },
+                "province": {
+                    "type": "string"
+                },
+                "sex": {
+                    "type": "integer"
+                },
+                "unionid": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.WithdrawDetailResponse": {
+            "type": "object",
+            "properties": {
+                "account_name": {
+                    "description": "账户名",
+                    "type": "string"
+                },
+                "account_no": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "actual_amount": {
+                    "description": "实际到账金额",
+                    "type": "number"
+                },
+                "amount": {
+                    "description": "提现金额",
+                    "type": "number"
+                },
+                "audit_time": {
+                    "description": "审核时间",
+                    "type": "string"
+                },
+                "bank_name": {
+                    "description": "银行名称",
+                    "type": "string"
+                },
+                "complete_time": {
+                    "description": "完成时间",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "fee": {
+                    "description": "手续费",
+                    "type": "number"
+                },
+                "id": {
+                    "description": "提现单ID",
+                    "type": "integer"
+                },
+                "reject_reason": {
+                    "description": "拒绝原因",
+                    "type": "string"
+                },
+                "remark": {
+                    "description": "备注",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "提现状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "提现状态文本",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                },
+                "withdraw_no": {
+                    "description": "提现单号",
+                    "type": "string"
+                }
+            }
+        },
+        "model.WithdrawListItem": {
+            "type": "object",
+            "properties": {
+                "account_name": {
+                    "description": "账户名",
+                    "type": "string"
+                },
+                "account_no": {
+                    "description": "账号",
+                    "type": "string"
+                },
+                "actual_amount": {
+                    "description": "实际到账金额",
+                    "type": "number"
+                },
+                "amount": {
+                    "description": "提现金额",
+                    "type": "number"
+                },
+                "bank_name": {
+                    "description": "银行名称",
+                    "type": "string"
+                },
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "fee": {
+                    "description": "手续费",
+                    "type": "number"
+                },
+                "id": {
+                    "description": "提现单ID",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "提现状态",
+                    "type": "integer"
+                },
+                "status_text": {
+                    "description": "提现状态文本",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "withdraw_no": {
+                    "description": "提现单号",
+                    "type": "string"
+                }
+            }
+        },
+        "model.WithdrawListResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "description": "提现列表",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.WithdrawListItem"
+                    }
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "size": {
+                    "description": "每页条数",
+                    "type": "integer"
+                },
+                "total": {
+                    "description": "总数",
+                    "type": "integer"
+                }
+            }
+        },
+        "model.WithdrawRequest": {
+            "type": "object",
+            "required": [
+                "amount"
+            ],
+            "properties": {
+                "amount": {
+                    "description": "提取金额，必须大于0",
+                    "type": "number"
+                }
+            }
+        },
+        "v1.CryptoRequest": {
+            "description": "CryptoRequest 参数描述",
+            "type": "object",
+            "required": [
+                "phone"
+            ],
+            "properties": {
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.GetProfileResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/v1.GetProfileResponseData"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.GetProfileResponseData": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "aff_code": {
+                    "type": "string"
+                },
+                "avatar": {
+                    "type": "string"
+                },
+                "birthday": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer"
+                },
+                "member_level": {
+                    "type": "integer"
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "alan"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "point": {
+                    "type": "integer"
+                },
+                "role": {
+                    "type": "integer"
+                },
+                "step_max_point": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "user_asset": {
+                    "$ref": "#/definitions/v1.UserAsset"
+                }
+            }
+        },
+        "v1.LoginRequest": {
+            "description": "LoginRequest 参数描述",
+            "type": "object",
+            "required": [
+                "code",
+                "phone"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.LoginResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/v1.LoginResponseData"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.LoginResponseData": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string"
+                },
+                "expired": {
+                    "type": "integer"
+                }
+            }
+        },
+        "v1.ResetPasswordRequest": {
+            "description": "ResetPasswordRequest 参数描述",
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "v1.UserAsset": {
+            "type": "object",
+            "properties": {
+                "balance": {
+                    "type": "number"
+                },
+                "coupon_count": {
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
